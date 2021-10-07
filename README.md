@@ -14,5 +14,5 @@
 > 리드: 김하늬
 
 >개발 환경: Windows10, tkinter, tkinter-design
-
+:
 
