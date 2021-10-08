@@ -7,7 +7,7 @@
 ## 소스 코드 실행
 ```
 git clone https://github.com/2021-Capstone-Team1/Topic1.git
-cd Topic1/tkinter_sw
+cd Topic1
 python3 gui.py
 ```
 
