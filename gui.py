@@ -128,8 +128,8 @@ right_frame.columnconfigure(index=0, weight=1)
 video_label = Label(left_frame, bg="#1c3257", text="video")
 video_label.grid(row=0, columnspan=4, sticky=NSEW)
 
-buttonFont = Font(family='Tahoma', size=16, weight='bold', underline=1)
-scaleFont = Font(family='Tahoma', size=16, weight='bold')
+buttonFont = Font(family='Tahoma', size=14, weight='bold', underline=1)
+scaleFont = Font(family='Tahoma', size=14, weight='bold')
 edge_button = Button(
     left_frame,
     text="Edge Detection",
@@ -175,5 +175,8 @@ hist_area = FigureCanvasTkAgg(fig, master=toolbar_frame)
 hist_area.get_tk_widget().pack(side="top", fill=BOTH, expand=1)
 toolbar = NavigationToolbar2Tk(hist_area, toolbar_frame)
 
-cam_thread()
-window.mainloop()
+if __name__ == "__main__":
+    print("start")
+    cam_thread()
+    window.mainloop()
+    print("end")
