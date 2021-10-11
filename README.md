@@ -4,14 +4,20 @@
 예상 결과물: 캠을 이용한 실시간 히스토그램 & 엣지검출 SW개발
 > 웹캠 또는 usb 캠 사용
 
+## 결과물 실행
+> Releases 확인하기
+
+현재 EdgeDetector v1.0이 릴리즈 되었습니다. (2021-10-12)
+
 ## 소스 코드 실행
+방법1. git으로 다운받기
 ```
 git clone https://github.com/2021-Capstone-Team1/Topic1.git
 cd Topic1
 python3 gui.py
 ```
 
-만약 `Download Zip`으로 다운받았다면  
+방법2. `Download Zip`으로 다운받기  
 
 ![image](https://user-images.githubusercontent.com/30483337/136502720-538ab817-b743-4649-837d-3c0e71813f0a.png)
 
