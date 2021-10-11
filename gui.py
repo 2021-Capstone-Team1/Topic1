@@ -27,6 +27,7 @@ def switch_VMODE():
         VMODE = VidMode.ORIGINAL
 
 
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -108,13 +109,14 @@ button_1 = Button(
     command=lambda: print("button_1 clicked"),
     relief="flat"
 )
-button_1.place(
-    # x=120.0,
-    y=957.0,
-    width=159.0,
-    height=57.0,
-    relx=0.1
-)
+button_1.pack()
+# button_1.place(
+#     # x=120.0,
+#     y=957.0,
+#     width=159.0,
+#     height=57.0,
+#     relx=0.1
+# )
 
 # '경계검출' 버튼------------
 button_image_2 = PhotoImage(
@@ -127,14 +129,7 @@ button_2 = Button(
     command=switch_VMODE,
     relief="flat"
 )
-button_2.place(
-    # x=20.0,
-    y=957.0,
-    width=159.0,
-    height=57.0,
-    relx=0.2
-)
-
+button_2.pack()
 # threshold scale-------------------
 low_label = Label(window, text="Low Threshold")
 low_label.place(
@@ -166,10 +161,5 @@ hist_area = FigureCanvasTkAgg(fig, master=window)
 hist_area.get_tk_widget().pack(side=BOTTOM, fill=BOTH, expand=1)
 toolbar = NavigationToolbar2Tk(hist_area, window)
 
-# FIXME: Thread 설정만 하면 tkinter 창이 안 뜸
-# Thread 설정
-# thread_img = threading.Thread(target=cam_thread(), args=())
-# thread_img.daemon = True
-# thread_img.start()
 cam_thread()
 window.mainloop()
