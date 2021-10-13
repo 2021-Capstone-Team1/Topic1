@@ -3,7 +3,7 @@
 
 예상 결과물: 캠을 이용한 실시간 히스토그램 & 엣지검출 SW개발
 > 웹캠 또는 usb 캠 사용
->
+
 ## 결과물 실행
 > Releases 확인하기
 
@@ -36,6 +36,6 @@ python3 gui.py
 ## SW GUI 개발
 > 리드: 김하늬
 
->개발 환경: Windows10, tkinter, tkinter-design
-:
+>개발 환경: Windows10, PyCharm, tkinter
+
 
