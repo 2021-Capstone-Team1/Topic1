@@ -5,9 +5,11 @@
 > 웹캠 또는 usb 캠 사용
 
 ## 결과물 실행
-> Releases 확인하기
+> Releases 확인하기  
 
 현재 EdgeDetector v1.0이 릴리즈 되었습니다. (2021-10-12)
+
+![image](https://user-images.githubusercontent.com/30483337/137175447-8f42382c-b7d9-4a4b-a76e-48018e4cbcfb.png)
 
 ## 소스 코드 실행
 방법1. git으로 다운받기
