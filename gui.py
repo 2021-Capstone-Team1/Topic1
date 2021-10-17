@@ -164,13 +164,13 @@ high_scale.set(150)
 high_scale.pack(side="right", padx=3)
 
 # Right Layout Widgets: Labels
-greyscale_label = Label(right_frame,bg="white")
+greyscale_label = Label(right_frame, bg="orange")
 greyscale_label.grid(column=0, row=0)
 
-toolbar_frame = Frame(right_frame, bg="white")
+toolbar_frame = Frame(right_frame, bg="lavender")
 toolbar_frame.grid(column=0, row=1, sticky=NSEW)
 
-fig =Figure(figsize=(4,5), dpi=100)
+fig = Figure(figsize=(4, 5), dpi=100)
 hist_area = FigureCanvasTkAgg(fig, master=toolbar_frame)
 hist_area.get_tk_widget().pack(side="top", fill=BOTH, expand=1)
 toolbar = NavigationToolbar2Tk(hist_area, toolbar_frame)
