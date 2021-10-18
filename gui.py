@@ -1,21 +1,21 @@
 import os
 import time
-import numpy as np
+from enum import Enum
 from pathlib import Path
 from tkinter import *
 from tkinter import ttk
 from tkinter.font import Font
-from enum import Enum
 
 import cv2
+import numpy as np
+import pyautogui
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
 
 
-# TODO : image capture (에지 이미지 가져오기)
 # TODO : capture_lb 너비 넓히기, 스크롤 추가
-# TODO : ksize -> spin box로 1~31 조정
+
 class Blur(Enum):
     GAUSSIAN = "GAUSSIAN"
     MEDIAN = "MEDIAN"
@@ -117,7 +117,7 @@ def execute_blur(img, blur):
 def execute_detector(img, detector):
     if detector == Detector.CANNY:
         # L2gradient(bool): L2-norm으로 방향성 그레이디언트를 정확하게 계산 vs 정확성은 떨어지지만 속도가 더 빠른 L1-norm
-        norm_type = FALSE if norm_combobox.get() == "L1"  else TRUE
+        norm_type = FALSE if norm_combobox.get() == "L1" else TRUE
         img = cv2.Canny(img, low_scale.get(), high_scale.get(), L2gradient=norm_type)
     elif detector == Detector.LAPLACIAN:
         img = cv2.Laplacian(img, ddepth=cv2.CV_8U, ksize=int(ksize_d_spinbox.get()))
@@ -141,23 +141,25 @@ def Prewitt(img):
     img_dy = cv2.filter2D(img, ddepth=-1, kernel=kernel_y)
     return img_dx + img_dy
 
+
 def snapshot():
     # Warning:
     # 같은 이름으로 저장된다면 실제디렉토리엔 하나만 저장되지만, capture_lb엔 계속 추가된다.
-    img = cv2.imread("saved_images/cat.PNG")
-    filename = "frame-" + time.strftime("%Y-%d-%m-%H-%M-%S") + ".jpg"
+    filename = SELECTED_DETECTOR.value + "-"+time.strftime("%Y-%d-%m-%H-%M-%S") + ".jpg"
     dir = "saved_images/" + filename
-
-    cv2.imwrite(dir, img)
+    x, y = window.winfo_rootx(), window.winfo_rooty()
+    w, h = window.winfo_width(), window.winfo_height()
+    img = pyautogui.screenshot(region=(x, y, w, h))
+    img.save(dir)
+    print("Screenshot Saved..")
     capture_lb.insert(END, filename)
 
 
 def popup_saved_image(filename):
     FILE_DIR = SAVED_IMAGES_PATH / Path(filename)
     popup_toplevel = Toplevel()
-    popup_toplevel.minsize(width=250, height=250)
     popup_toplevel.title(filename)
-    popup_label = Label(popup_toplevel, width=400, height=400, bg="cyan")
+    popup_label = Label(popup_toplevel, bg="white")
     popup_label.pack()
     img = Image.open(FILE_DIR)
     img = ImageTk.PhotoImage(image=img)
@@ -206,6 +208,7 @@ def cam_thread():
     video10.configure(image=edge_image)
 
     video10.after(10, cam_thread)
+
 
 # -------------tkinter-----------------
 window = Tk()
@@ -283,7 +286,7 @@ blur_combo.pack(side="left", padx=3)
 blur_combo.current(0)
 blur_combo.bind("<<ComboboxSelected>>", set_selected_blur)
 
-detector_label = Label(filter_frame, text="Edge Detection Type", font = scaleFont)
+detector_label = Label(filter_frame, text="Edge Detection Type", font=scaleFont)
 detector_label.pack(side="left", padx=3)
 detector_combo = ttk.Combobox(filter_frame, state="readonly", values=[e.name for e in Detector])
 detector_combo.pack(side="left", padx=3)
@@ -327,16 +330,17 @@ ksize_spinbox = Spinbox(blur_param_frame, from_=1, to=31, increment=2, state="re
                         textvariable=default_value_ksize)
 sigmaX_spinbox = Spinbox(blur_param_frame, from_=0, to=10, increment=1, state="readonly")
 d_spinbox = Spinbox(blur_param_frame, from_=0, to=10, increment=1, state="readonly", textvariable=default_value_d)
-sigmaColor_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state="readonly", textvariable=default_value_sigmaColor)
-sigmaSpace_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state="readonly", textvariable=default_value_sigmaSpace)
+sigmaColor_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state="readonly",
+                           textvariable=default_value_sigmaColor)
+sigmaSpace_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state="readonly",
+                           textvariable=default_value_sigmaSpace)
 
 ksize_d_label = Label(detector_param_frame, text="ksize", fg="#4535AA", font=scaleFont, bg="white")
 norm_label = Label(detector_param_frame, text="norm", fg="#4535AA", font=scaleFont, bg="white")
-dx_label = Label(detector_param_frame,   text="dx", fg="#4535AA", font=scaleFont, bg="white")
+dx_label = Label(detector_param_frame, text="dx", fg="#4535AA", font=scaleFont, bg="white")
 dy_label = Label(detector_param_frame, text="dy", fg="#4535AA", font=scaleFont, bg="white")
 low_label = Label(detector_param_frame, text="Low Threshold", fg="#4535AA", font=scaleFont, bg="white")
 high_label = Label(detector_param_frame, text="High Threshold", fg="#4535AA", font=scaleFont, bg="white")
-
 
 ksize_d_spinbox = Spinbox(detector_param_frame, from_=1, to=31, increment=2, state="readonly",
                           textvariable=default_value_ksize_d)
@@ -344,9 +348,9 @@ norm_combobox = ttk.Combobox(detector_param_frame, state="readonly", values=["L1
 norm_combobox.current(1)
 dx_spinbox = Spinbox(detector_param_frame, from_=1, to=10, increment=1, state="readonly")
 dy_spinbox = Spinbox(detector_param_frame, from_=1, to=10, increment=1, state="readonly")
-low_scale = Scale(detector_param_frame,  from_=0, to=255, bg="white", orient=HORIZONTAL)
+low_scale = Scale(detector_param_frame, from_=0, to=255, bg="white", orient=HORIZONTAL)
 low_scale.set(100)
-high_scale = Scale(detector_param_frame,  from_=0, to=255, bg="white", orient=HORIZONTAL)
+high_scale = Scale(detector_param_frame, from_=0, to=255, bg="white", orient=HORIZONTAL)
 high_scale.set(100)
 
 # Capture layout
