@@ -1,18 +1,18 @@
 import os
 import time
-import numpy as np
-from ttkthemes import ThemedTk
-import pyautogui
-from pyscreenshot import grab
-import cv2
+from enum import Enum
 from pathlib import Path
 from tkinter import *
 from tkinter import ttk
 from tkinter.font import Font
-from enum import Enum
+
+import cv2
+import numpy as np
+import pyautogui
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
+
 
 # TODO : capture_lb 너비 넓히기, 스크롤 추가
 
