@@ -15,7 +15,6 @@ from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
 
 
-
 class Blur(Enum):
     GAUSSIAN = "GAUSSIAN"
     MEDIAN = "MEDIAN"
@@ -31,8 +30,8 @@ class Detector(Enum):
     NONE = "NONE"
 
 
-OUTPUT_PATH = Path(__file__).parent
-SAVED_IMAGES_PATH = OUTPUT_PATH / Path("saved_images")
+Path('saved_images').mkdir(exist_ok=True)  # 스크린샷 저장할 경로 생성
+SAVED_IMAGES_PATH = os.getcwd() / Path("saved_images")
 SELECTED_BLUR = Blur.GAUSSIAN
 SELECTED_DETECTOR = Detector.CANNY
 
@@ -380,6 +379,7 @@ capture_lb['fg'] = "lime"
 capture_lb['font'] = scaleFont
 capture_lb.pack(pady=3, fill="x", expand="yes")
 capture_lb.bind("<<ListboxSelect>>", lambda x: popup_saved_image(capture_lb.get(capture_lb.curselection())))
+
 for file in os.listdir(SAVED_IMAGES_PATH):
     capture_lb.insert(END, file)
 
