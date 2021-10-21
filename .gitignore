@@ -1,5 +1,5 @@
 *.html
-
+dist
 
 # intellij
 .idea/
