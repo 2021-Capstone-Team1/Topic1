@@ -14,7 +14,6 @@ from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
 
-# TODO : capture_lb 너비 넓히기, 스크롤 추가
 
 
 class Blur(Enum):
@@ -146,12 +145,12 @@ def Prewitt(img):
 def snapshot():
     # Warning:
     # 같은 이름으로 저장된다면 실제디렉토리엔 하나만 저장되지만, capture_lb엔 계속 추가된다.
-    filename = SELECTED_DETECTOR.value + "-"+time.strftime("%Y-%d-%m-%H-%M-%S") + ".jpg"
+    filename = SELECTED_DETECTOR.value + "-" + time.strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
     dir = "saved_images/" + filename
     x, y = window.winfo_rootx(), window.winfo_rooty()
     w, h = window.winfo_width(), window.winfo_height()
     print(x, y, w, h)
-    img = grab(bbox=(x, y, x+w, y+h))
+    img = grab(bbox=(x, y, x + w, y + h))
     img.save(dir)
     print("Screenshot Saved..")
     capture_lb.insert(END, filename)
@@ -244,10 +243,10 @@ canvas_frame.rowconfigure(1, weight=3)
 canvas_frame.rowconfigure(2, weight=1)
 
 # Top layout
-video00 = Label(canvas_frame, bg="blue", text="원본영상")
-video01 = Label(canvas_frame, bg="darkblue", text="흑백영상")
-video10 = Label(canvas_frame, bg="cyan", text="에지영상")
-video11 = Frame(canvas_frame, bg="navy")  # toolbar frame
+video00 = Label(canvas_frame, bg="darkslategrey", text="원본영상", borderwidth=2, relief="ridge")
+video01 = Label(canvas_frame, bg="darkslategrey", text="흑백영상", borderwidth=2, relief="ridge")
+video10 = Label(canvas_frame, bg="darkslategrey", text="에지영상", borderwidth=2, relief="ridge")
+video11 = Frame(canvas_frame, bg="darkslategrey", borderwidth=2, relief="ridge")  # toolbar frame
 
 video00.grid(row=0, column=0, sticky=NSEW)
 video01.grid(row=0, column=1, sticky=NSEW)
@@ -278,34 +277,34 @@ param_layout.columnconfigure(0, weight=1)
 param_layout.columnconfigure(1, weight=7)
 
 # row=0
-blur_frame = Frame(param_layout, bg="lightgreen")
+blur_frame = Frame(param_layout, bg="gold")
 blur_frame.grid(row=0, column=0, sticky=NSEW)
-filter_frame = Frame(param_layout, bg="darkolivegreen")
+filter_frame = Frame(param_layout, bg="gold")
 filter_frame.grid(row=0, column=1, sticky=NSEW)
 
-blur_label = Label(blur_frame, text="Blur Type", font=scaleFont)
+blur_label = Label(blur_frame, text="Blur Type", bg="gold", font=scaleFont)
 blur_label.pack(side="left", padx=3)
-blur_combo = ttk.Combobox(blur_frame, state="readonly", values=[e.name for e in Blur])
+blur_combo = ttk.Combobox(blur_frame, state="readonly", font=scaleFont, values=[e.name for e in Blur])
 blur_combo.pack(side="left", padx=3)
 blur_combo.current(0)
 blur_combo.bind("<<ComboboxSelected>>", set_selected_blur)
 
-detector_label = Label(filter_frame, text="Edge Detection Type", font=scaleFont)
+detector_label = Label(filter_frame, text="Edge Detection Type", bg="gold", font=scaleFont)
 detector_label.pack(side="left", padx=3)
-detector_combo = ttk.Combobox(filter_frame, state="readonly", values=[e.name for e in Detector])
+detector_combo = ttk.Combobox(filter_frame, state="readonly", font=scaleFont, values=[e.name for e in Detector])
 detector_combo.pack(side="left", padx=3)
 detector_combo.current(0)
 detector_combo.bind("<<ComboboxSelected>>", set_selected_detector)
 
 # row=1
-blur_param_frame = Frame(param_layout, bg="darkgreen")
+blur_param_frame = Frame(param_layout, bg="peru")
 blur_param_frame.grid(row=1, column=0, sticky=NSEW)
 blur_param_frame.rowconfigure(0, weight=1)
 blur_param_frame.rowconfigure(1, weight=1)
 blur_param_frame.rowconfigure(2, weight=1)
 blur_param_frame.columnconfigure(0, weight=1)
 blur_param_frame.columnconfigure(1, weight=1)
-detector_param_frame = Frame(param_layout, bg="darkcyan")
+detector_param_frame = Frame(param_layout, bg="peru")
 detector_param_frame.grid(row=1, column=1, sticky=NSEW)
 detector_param_frame.rowconfigure(0, weight=1)
 detector_param_frame.rowconfigure(1, weight=1)
@@ -314,11 +313,11 @@ detector_param_frame.columnconfigure(1, weight=1)
 detector_param_frame.columnconfigure(2, weight=1)
 detector_param_frame.columnconfigure(3, weight=1)
 
-ksize_label = Label(blur_param_frame, text="ksize", fg="white", font=scaleFont, bg="blue")
-sigmaX_label = Label(blur_param_frame, text="sigmaX", fg="white", font=scaleFont, bg="blue")
-d_label = Label(blur_param_frame, text="diameter", fg="white", font=scaleFont, bg="blue")
-sigmaColor_label = Label(blur_param_frame, text="sigmaColor", fg="white", font=scaleFont, bg="blue")
-sigmaSpace_label = Label(blur_param_frame, text="sigmaSpace", fg="white", font=scaleFont, bg="blue")
+ksize_label = Label(blur_param_frame, text="ksize", fg="#4535AA", font=scaleFont, bg="white")
+sigmaX_label = Label(blur_param_frame, text="sigmaX", fg="#4535AA", font=scaleFont, bg="white")
+d_label = Label(blur_param_frame, text="diameter", fg="#4535AA", font=scaleFont, bg="white")
+sigmaColor_label = Label(blur_param_frame, text="#4535AA", fg="#4535AA", font=scaleFont, bg="white")
+sigmaSpace_label = Label(blur_param_frame, text="#4535AA", fg="#4535AA", font=scaleFont, bg="white")
 
 default_value_ksize = StringVar(window)
 default_value_ksize.set("3")
@@ -353,12 +352,12 @@ norm_combobox.current(1)
 dx_spinbox = Spinbox(detector_param_frame, from_=1, to=10, increment=1, state="readonly")
 dy_spinbox = Spinbox(detector_param_frame, from_=1, to=10, increment=1, state="readonly")
 low_scale = Scale(detector_param_frame, from_=0, to=255, bg="white", orient=HORIZONTAL)
-low_scale.set(100)
+low_scale.set(70)
 high_scale = Scale(detector_param_frame, from_=0, to=255, bg="white", orient=HORIZONTAL)
-high_scale.set(100)
+high_scale.set(120)
 
 # Capture layout
-capture_layout = Frame(bottom_layout, bg="cyan")
+capture_layout = Frame(bottom_layout, bg="midnightblue")
 capture_layout.grid(row=0, column=1, rowspan=2, sticky="NSEW")
 
 capture_btn = Button(capture_layout,
@@ -372,14 +371,19 @@ capture_btn = Button(capture_layout,
                      relief="groove")
 capture_btn.pack(pady=3)
 
-capture_lb = Listbox(capture_layout)
-capture_lb['bg'] = "darkgrey"
+scrollbar = Scrollbar(capture_layout)
+scrollbar.pack(side="right", fill="y")
+
+capture_lb = Listbox(capture_layout, yscrollcommand=scrollbar.set)
+capture_lb['bg'] = "black"
 capture_lb['fg'] = "lime"
-capture_lb.pack(pady=3)
+capture_lb['font'] = scaleFont
+capture_lb.pack(pady=3, fill="x", expand="yes")
 capture_lb.bind("<<ListboxSelect>>", lambda x: popup_saved_image(capture_lb.get(capture_lb.curselection())))
 for file in os.listdir(SAVED_IMAGES_PATH):
     capture_lb.insert(END, file)
 
+scrollbar["command"] = capture_lb.yview
 # -----------------------------------
 
 if __name__ == "__main__":
