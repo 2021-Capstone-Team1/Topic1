@@ -5,16 +5,17 @@ from pathlib import Path
 from tkinter import *
 from tkinter import ttk
 from tkinter.font import Font
+from ctypes import windll
 
 import cv2
 import numpy as np
-import pyautogui
+from pyscreenshot import grab
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
 
-
 # TODO : capture_lb 너비 넓히기, 스크롤 추가
+
 
 class Blur(Enum):
     GAUSSIAN = "GAUSSIAN"
@@ -149,7 +150,8 @@ def snapshot():
     dir = "saved_images/" + filename
     x, y = window.winfo_rootx(), window.winfo_rooty()
     w, h = window.winfo_width(), window.winfo_height()
-    img = pyautogui.screenshot(region=(x, y, w, h))
+    print(x, y, w, h)
+    img = grab(bbox=(x, y, x+w, y+h))
     img.save(dir)
     print("Screenshot Saved..")
     capture_lb.insert(END, filename)
@@ -211,6 +213,8 @@ def cam_thread():
 
 
 # -------------tkinter-----------------
+user32 = windll.user32
+user32.SetProcessDPIAware()
 window = Tk()
 
 # 창을 screen 중간에 열기
@@ -329,7 +333,7 @@ default_value_sigmaSpace.set("75")
 ksize_spinbox = Spinbox(blur_param_frame, from_=1, to=31, increment=2, state="readonly",
                         textvariable=default_value_ksize)
 sigmaX_spinbox = Spinbox(blur_param_frame, from_=0, to=10, increment=1, state="readonly")
-d_spinbox = Spinbox(blur_param_frame, from_=0, to=10, increment=1, state="readonly", textvariable=default_value_d)
+d_spinbox = Spinbox(blur_param_frame, from_=1, to=10, increment=1, state="readonly", textvariable=default_value_d)
 sigmaColor_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state="readonly",
                            textvariable=default_value_sigmaColor)
 sigmaSpace_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state="readonly",
