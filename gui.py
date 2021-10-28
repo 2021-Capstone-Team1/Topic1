@@ -321,7 +321,7 @@ sigmaSpace_label = Label(blur_param_frame, text="sigmaSpace", fg="#4535AA", font
 default_value_ksize = StringVar(window)
 default_value_ksize.set("3")
 default_value_ksize_d = StringVar(window)
-default_value_ksize_d.set("3")
+default_value_ksize_d.set("5")
 default_value_d = StringVar(window)
 default_value_d.set("9")
 default_value_sigmaColor = StringVar(window)
