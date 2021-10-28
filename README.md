@@ -7,7 +7,20 @@
 ## 결과물 실행
 > Releases 확인하기  
 
+**현재 EdgeDetector v2.0이 릴리즈 되었습니다. (2021-10-21)**
+- 4칸형으로 레이아웃으로 변경
+- 블러 타입 선택, 파라미터 값 조정 기능 추가
+  > 블러 타입: Gaussian, Median, Bilateral
+- 에지 검출기 타입 선택, 파라미터 값 조정 기능 추가
+  > Canny, Laplician, Sobel Prewitt
+- 스크린샷 기능 추가
+
+![image](https://user-images.githubusercontent.com/30483337/138281931-fbcc2e8f-de3a-4f4b-b34e-0f0c973c236a.png)
+
+
 현재 EdgeDetector v1.0이 릴리즈 되었습니다. (2021-10-12)
+- Gaussian 블러링, CannyEdge로 에지 검출
+- CanyEdge의 이력 문턱치 조정 기능
 
 ![image](https://user-images.githubusercontent.com/30483337/137175447-8f42382c-b7d9-4a4b-a76e-48018e4cbcfb.png)
 
