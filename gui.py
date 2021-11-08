@@ -141,19 +141,20 @@ def Prewitt(img):
     return img_dx + img_dy
 
 
-def snapshot(widget):
+def snapshot():
     # Warning:
     # 같은 이름으로 저장된다면 실제디렉토리엔 하나만 저장되지만, capture_lb엔 계속 추가된다.
     filename = SELECTED_DETECTOR.value + "-" + time.strftime("%Y-%m-%d-%H-%M-%S") + ".png"
     dir = "saved_images/" + filename
 
-    target_img = ImageTk.getimage(widget.img)
+    target_img = ImageTk.getimage(video10.img)
     target_img.save(dir)
     print("Screenshot Saved..", type(target_img))
     capture_lb.insert(END, filename)
 
 
 def popup_saved_image(filename):
+    print(filename)
     FILE_DIR = SAVED_IMAGES_PATH / Path(filename)
     img = Image.open(FILE_DIR)
     img = ImageTk.PhotoImage(image=img)
@@ -165,7 +166,6 @@ def draw_histogram(img):
     fig.clear()
     fig.add_subplot(111).plot(cv2.calcHist([img], [0], None, [256], [0, 255]))
     hist_area.draw_idle()
-
 
 # 핵심: cv2.imshow 대신 tkinter에서 제공하는 label 위젯에 반복적으로 이미지를 교체해주는 것이다.
 cap = cv2.VideoCapture(0)
@@ -197,8 +197,6 @@ def cam_thread():
 
 
 # -------------tkinter-----------------
-user32 = windll.user32
-user32.SetProcessDPIAware()
 window = Tk()
 
 # 창을 screen 중간에 열기
@@ -352,19 +350,19 @@ capture_btn = Button(capture_layout,
                      bg="#4535AA",
                      activeforeground="#009888",
                      borderwidth=3,
-                     command=lambda: snapshot(video10),
+                     command=lambda: snapshot(),
                      relief="groove")
 capture_btn.pack(pady=3)
 
 scrollbar = Scrollbar(capture_layout)
 scrollbar.pack(side="right", fill="y")
 
-capture_lb = Listbox(capture_layout, yscrollcommand=scrollbar.set)
+capture_lb = Listbox(capture_layout, yscrollcommand=scrollbar.set, exportselection=False)
 capture_lb['bg'] = "black"
 capture_lb['fg'] = "lime"
 capture_lb['font'] = scaleFont
 capture_lb.pack(pady=3, fill="x", expand="yes")
-capture_lb.bind("<<ListboxSelect>>", lambda x: popup_saved_image(capture_lb.get(capture_lb.curselection())))
+capture_lb.bind("<<ListboxSelect>>", lambda event: popup_saved_image(capture_lb.get(capture_lb.curselection())))
 
 for file in os.listdir(SAVED_IMAGES_PATH):
     capture_lb.insert(END, file)
