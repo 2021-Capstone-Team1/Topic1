@@ -1,6 +1,6 @@
 *.html
 dist
-
+saved_images/
 # intellij
 .idea/
 
