@@ -1,18 +1,18 @@
 import os
 import time
+from ctypes import windll
 from enum import Enum
 from pathlib import Path
 from tkinter import *
 from tkinter import ttk
 from tkinter.font import Font
-from ctypes import windll
 
 import cv2
 import numpy as np
-from pyscreenshot import grab
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
+from pyscreenshot import grab
 
 
 class Blur(Enum):
@@ -141,30 +141,24 @@ def Prewitt(img):
     return img_dx + img_dy
 
 
-def snapshot():
+def snapshot(widget):
     # Warning:
     # 같은 이름으로 저장된다면 실제디렉토리엔 하나만 저장되지만, capture_lb엔 계속 추가된다.
-    filename = SELECTED_DETECTOR.value + "-" + time.strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
+    filename = SELECTED_DETECTOR.value + "-" + time.strftime("%Y-%m-%d-%H-%M-%S") + ".png"
     dir = "saved_images/" + filename
-    x, y = window.winfo_rootx(), window.winfo_rooty()
-    w, h = window.winfo_width(), window.winfo_height()
-    print(x, y, w, h)
-    img = grab(bbox=(x, y, x + w, y + h))
-    img.save(dir)
-    print("Screenshot Saved..")
+
+    target_img = ImageTk.getimage(widget.img)
+    target_img.save(dir)
+    print("Screenshot Saved..", type(target_img))
     capture_lb.insert(END, filename)
 
 
 def popup_saved_image(filename):
     FILE_DIR = SAVED_IMAGES_PATH / Path(filename)
-    popup_toplevel = Toplevel()
-    popup_toplevel.title(filename)
-    popup_label = Label(popup_toplevel, bg="white")
-    popup_label.pack()
     img = Image.open(FILE_DIR)
     img = ImageTk.PhotoImage(image=img)
-    popup_label.img = img
-    popup_label.configure(image=img)
+    video11.img = img
+    video11.configure(image=img)
 
 
 def draw_histogram(img):
@@ -179,7 +173,6 @@ cap = cv2.VideoCapture(0)
 
 def cam_thread():
     global SELECTED_BLUR, SELECTED_DETECTOR
-
     ret, color = cap.read()
 
     # 컬러
@@ -189,21 +182,14 @@ def cam_thread():
     video00.img = color_image
     video00.configure(image=color_image)
 
-    # 그레이스케일
-    grey_image = cv2.cvtColor(color, cv2.COLOR_BGR2GRAY)
-    grey_image_label = Image.fromarray(grey_image)  # ndarray -> tkinter용 이미지로 변환
-    grey_image_label = ImageTk.PhotoImage(grey_image_label)
-    video01.img = grey_image_label
-    video01.configure(image=grey_image_label)
-
     # 히스토그램
+    grey_image = cv2.cvtColor(color, cv2.COLOR_BGR2GRAY)
     draw_histogram(grey_image)
 
     # 에지
     edge_image = edge_detection(grey_image, SELECTED_BLUR, SELECTED_DETECTOR)  # 캐니에지검출
     edge_image = Image.fromarray(edge_image)  # ndarray -> tkinter용 이미지로 변환
     edge_image = ImageTk.PhotoImage(edge_image)
-
     video10.img = edge_image
     video10.configure(image=edge_image)
 
@@ -243,9 +229,9 @@ canvas_frame.rowconfigure(2, weight=1)
 
 # Top layout
 video00 = Label(canvas_frame, bg="darkslategrey", text="원본영상", borderwidth=2, relief="ridge")
-video01 = Label(canvas_frame, bg="darkslategrey", text="흑백영상", borderwidth=2, relief="ridge")
+video01 = Frame(canvas_frame, bg="darkslategrey", borderwidth=2, relief="ridge")  # toolbar frame
 video10 = Label(canvas_frame, bg="darkslategrey", text="에지영상", borderwidth=2, relief="ridge")
-video11 = Frame(canvas_frame, bg="darkslategrey", borderwidth=2, relief="ridge")  # toolbar frame
+video11 = Label(canvas_frame, bg="darkslategrey", text="캡쳐영상", borderwidth=2, relief="ridge")
 
 video00.grid(row=0, column=0, sticky=NSEW)
 video01.grid(row=0, column=1, sticky=NSEW)
@@ -253,9 +239,9 @@ video10.grid(row=1, column=0, sticky=NSEW)
 video11.grid(row=1, column=1, sticky=NSEW)
 
 fig = Figure(figsize=(2, 2), dpi=100)  # histogram
-hist_area = FigureCanvasTkAgg(fig, master=video11)
+hist_area = FigureCanvasTkAgg(fig, master=video01)
 hist_area.get_tk_widget().pack(side="top", fill=BOTH, expand=1)
-toolbar = NavigationToolbar2Tk(hist_area, video11)
+toolbar = NavigationToolbar2Tk(hist_area, video01)
 
 # bottom layout
 buttonFont = Font(family='Tahoma', size=10, weight='bold', underline=1)
@@ -366,7 +352,7 @@ capture_btn = Button(capture_layout,
                      bg="#4535AA",
                      activeforeground="#009888",
                      borderwidth=3,
-                     command=lambda: snapshot(),
+                     command=lambda: snapshot(video10),
                      relief="groove")
 capture_btn.pack(pady=3)
 
