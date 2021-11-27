@@ -226,10 +226,10 @@ canvas_frame.rowconfigure(1, weight=3)
 canvas_frame.rowconfigure(2, weight=1)
 
 # Top layout
-video00 = Label(canvas_frame, bg="darkslategrey", text="원본영상", borderwidth=2, relief="ridge")
-video01 = Frame(canvas_frame, bg="darkslategrey", borderwidth=2, relief="ridge")  # toolbar frame
-video10 = Label(canvas_frame, bg="darkslategrey", text="에지영상", borderwidth=2, relief="ridge")
-video11 = Label(canvas_frame, bg="darkslategrey", text="캡쳐영상", borderwidth=2, relief="ridge")
+video00 = Label(canvas_frame, bg="lightslategray", text="원본영상", borderwidth=2, relief="ridge")
+video01 = Frame(canvas_frame, bg="lightslategray", borderwidth=2, relief="ridge")  # toolbar frame
+video10 = Label(canvas_frame, bg="lightslategray", text="에지영상", borderwidth=2, relief="ridge")
+video11 = Label(canvas_frame, bg="lightslategray", borderwidth=2, relief="ridge")
 
 video00.grid(row=0, column=0, sticky=NSEW)
 video01.grid(row=0, column=1, sticky=NSEW)
@@ -242,10 +242,9 @@ hist_area.get_tk_widget().pack(side="top", fill=BOTH, expand=1)
 toolbar = NavigationToolbar2Tk(hist_area, video01)
 
 # bottom layout
-buttonFont = Font(family='Tahoma', size=10, weight='bold', underline=1)
 scaleFont = Font(family='Tahoma', size=10, weight='bold')
 
-bottom_layout = Frame(canvas_frame, bg="ivory")
+bottom_layout = Frame(canvas_frame, bg="white")
 bottom_layout.grid(row=2, columnspan=2, sticky=NSEW)
 bottom_layout.columnconfigure(0, weight=6)
 bottom_layout.columnconfigure(1, weight=1)
@@ -260,19 +259,19 @@ param_layout.columnconfigure(0, weight=1)
 param_layout.columnconfigure(1, weight=7)
 
 # row=0
-blur_frame = Frame(param_layout, bg="gold")
+blur_frame = Frame(param_layout, bg="white",borderwidth = 1, relief=SUNKEN)
 blur_frame.grid(row=0, column=0, sticky=NSEW)
-filter_frame = Frame(param_layout, bg="gold")
+filter_frame = Frame(param_layout, bg="white",borderwidth = 1, relief=SUNKEN)
 filter_frame.grid(row=0, column=1, sticky=NSEW)
 
-blur_label = Label(blur_frame, text="Blur Type", bg="gold", font=scaleFont)
+blur_label = Label(blur_frame, text="Blur Type", fg="#4535AA",bg="white", font=scaleFont)
 blur_label.pack(side="left", padx=3)
 blur_combo = ttk.Combobox(blur_frame, state="readonly", font=scaleFont, values=[e.name for e in Blur])
 blur_combo.pack(side="left", padx=3)
 blur_combo.current(0)
 blur_combo.bind("<<ComboboxSelected>>", set_selected_blur)
 
-detector_label = Label(filter_frame, text="Edge Detection Type", bg="gold", font=scaleFont)
+detector_label = Label(filter_frame, text="Edge Detection Type",fg="#4535AA", bg="white", font=scaleFont)
 detector_label.pack(side="left", padx=3)
 detector_combo = ttk.Combobox(filter_frame, state="readonly", font=scaleFont, values=[e.name for e in Detector])
 detector_combo.pack(side="left", padx=3)
@@ -280,14 +279,14 @@ detector_combo.current(0)
 detector_combo.bind("<<ComboboxSelected>>", set_selected_detector)
 
 # row=1
-blur_param_frame = Frame(param_layout, bg="peru")
+blur_param_frame = Frame(param_layout, bg="white",borderwidth = 1, relief=SUNKEN)
 blur_param_frame.grid(row=1, column=0, sticky=NSEW)
 blur_param_frame.rowconfigure(0, weight=1)
 blur_param_frame.rowconfigure(1, weight=1)
 blur_param_frame.rowconfigure(2, weight=1)
 blur_param_frame.columnconfigure(0, weight=1)
 blur_param_frame.columnconfigure(1, weight=1)
-detector_param_frame = Frame(param_layout, bg="peru")
+detector_param_frame = Frame(param_layout, bg="white",borderwidth = 1, relief=SUNKEN)
 detector_param_frame.grid(row=1, column=1, sticky=NSEW)
 detector_param_frame.rowconfigure(0, weight=1)
 detector_param_frame.rowconfigure(1, weight=1)
@@ -296,11 +295,11 @@ detector_param_frame.columnconfigure(1, weight=1)
 detector_param_frame.columnconfigure(2, weight=1)
 detector_param_frame.columnconfigure(3, weight=1)
 
-ksize_label = Label(blur_param_frame, text="ksize", fg="#4535AA", font=scaleFont, bg="white")
-sigmaX_label = Label(blur_param_frame, text="sigmaX", fg="#4535AA", font=scaleFont, bg="white")
-d_label = Label(blur_param_frame, text="diameter", fg="#4535AA", font=scaleFont, bg="white")
-sigmaColor_label = Label(blur_param_frame, text="sigmaColor", fg="#4535AA", font=scaleFont, bg="white")
-sigmaSpace_label = Label(blur_param_frame, text="sigmaSpace", fg="#4535AA", font=scaleFont, bg="white")
+ksize_label = Label(blur_param_frame, text="ksize", font=scaleFont, bg="white")
+sigmaX_label = Label(blur_param_frame, text="sigmaX", font=scaleFont, bg="white")
+d_label = Label(blur_param_frame, text="diameter", font=scaleFont, bg="white")
+sigmaColor_label = Label(blur_param_frame, text="sigmaColor", font=scaleFont, bg="white")
+sigmaSpace_label = Label(blur_param_frame, text="sigmaSpace", font=scaleFont, bg="white")
 
 default_value_ksize = StringVar(window)
 default_value_ksize.set("3")
@@ -321,12 +320,12 @@ sigmaColor_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state=
 sigmaSpace_entry = Spinbox(blur_param_frame, from_=0, to=75, increment=1, state="readonly",
                            textvariable=default_value_sigmaSpace)
 
-ksize_d_label = Label(detector_param_frame, text="ksize", fg="#4535AA", font=scaleFont, bg="white")
-norm_label = Label(detector_param_frame, text="norm", fg="#4535AA", font=scaleFont, bg="white")
-dx_label = Label(detector_param_frame, text="dx", fg="#4535AA", font=scaleFont, bg="white")
-dy_label = Label(detector_param_frame, text="dy", fg="#4535AA", font=scaleFont, bg="white")
-low_label = Label(detector_param_frame, text="Low Threshold", fg="#4535AA", font=scaleFont, bg="white")
-high_label = Label(detector_param_frame, text="High Threshold", fg="#4535AA", font=scaleFont, bg="white")
+ksize_d_label = Label(detector_param_frame, text="ksize",font=scaleFont, bg="white")
+norm_label = Label(detector_param_frame, text="norm", font=scaleFont, bg="white")
+dx_label = Label(detector_param_frame, text="dx",  font=scaleFont, bg="white")
+dy_label = Label(detector_param_frame, text="dy", font=scaleFont, bg="white")
+low_label = Label(detector_param_frame, text="Low Threshold",  font=scaleFont, bg="white")
+high_label = Label(detector_param_frame, text="High Threshold",  font=scaleFont, bg="white")
 
 ksize_d_spinbox = Spinbox(detector_param_frame, from_=1, to=31, increment=2, state="readonly",
                           textvariable=default_value_ksize_d)
@@ -340,12 +339,12 @@ high_scale = Scale(detector_param_frame, from_=0, to=255, bg="white", orient=HOR
 high_scale.set(120)
 
 # Capture layout
-capture_layout = Frame(bottom_layout, bg="midnightblue")
+capture_layout = Frame(bottom_layout, bg="white")
 capture_layout.grid(row=0, column=1, rowspan=2, sticky="NSEW")
 
 capture_btn = Button(capture_layout,
                      text="Save Image",
-                     font=buttonFont,
+                     font=scaleFont,
                      fg="white",
                      bg="#4535AA",
                      activeforeground="#009888",
