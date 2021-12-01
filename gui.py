@@ -200,12 +200,12 @@ def cam_thread():
 window = Tk()
 
 # 창을 screen 중간에 열기
-w = 1200  # width for the Tk root
-h = 650  # height for the Tk root
+w = 1500  # width for the Tk root
+h = 800  # height for the Tk root
 
 ws = window.winfo_screenwidth()  # width of the screen
 hs = window.winfo_screenheight()  # height of the screen
-
+print(ws, hs)
 x = (ws / 2) - (w / 2)
 y = (hs / 2) - (h / 2)
 
@@ -219,17 +219,17 @@ window.resizable(True, True)
 # Canvas 3x2
 canvas_frame = Frame(window, width=w, height=h)
 canvas_frame.pack(fill=BOTH, expand=YES)
-canvas_frame.columnconfigure(0, weight=3)
-canvas_frame.columnconfigure(1, weight=3)
+canvas_frame.columnconfigure(0, weight=1)
+canvas_frame.columnconfigure(1, weight=1)
 canvas_frame.rowconfigure(0, weight=3)
 canvas_frame.rowconfigure(1, weight=3)
 canvas_frame.rowconfigure(2, weight=1)
 
 # Top layout
-video00 = Label(canvas_frame, bg="lightslategray", text="원본영상", borderwidth=2, relief="ridge")
-video01 = Frame(canvas_frame, bg="lightslategray", borderwidth=2, relief="ridge")  # toolbar frame
-video10 = Label(canvas_frame, bg="lightslategray", text="에지영상", borderwidth=2, relief="ridge")
-video11 = Label(canvas_frame, bg="lightslategray", borderwidth=2, relief="ridge")
+video00 = Label(canvas_frame, width=int(w/2), height=320, bg="lightslategray", text="원본영상", borderwidth=2, relief="ridge")
+video01 = Frame(canvas_frame, width=int(w/2), height=320, bg="lightslategray", borderwidth=2, relief="ridge")  # toolbar frame
+video10 = Label(canvas_frame, width=int(w/2), height=320, bg="lightslategray", text="에지영상", borderwidth=2, relief="ridge")
+video11 = Label(canvas_frame, width=int(w/2), height=320, bg="lightslategray", borderwidth=2, relief="ridge")
 
 video00.grid(row=0, column=0, sticky=NSEW)
 video01.grid(row=0, column=1, sticky=NSEW)
@@ -241,17 +241,17 @@ hist_area = FigureCanvasTkAgg(fig, master=video01)
 hist_area.get_tk_widget().pack(side="top", fill=BOTH, expand=1)
 toolbar = NavigationToolbar2Tk(hist_area, video01)
 
-# bottom layout
+# Bottom layout (parameter, capture영역으로 분할)
 scaleFont = Font(family='Tahoma', size=10, weight='bold')
 
 bottom_layout = Frame(canvas_frame, bg="white")
 bottom_layout.grid(row=2, columnspan=2, sticky=NSEW)
-bottom_layout.columnconfigure(0, weight=6)
+bottom_layout.columnconfigure(0, weight=1)
 bottom_layout.columnconfigure(1, weight=1)
 bottom_layout.rowconfigure(0, weight=1)
 
 # Parameter layout 2x2
-param_layout = Frame(bottom_layout)
+param_layout = Frame(bottom_layout, width=int(w*0.7), height=120)
 param_layout.grid(row=0, column=0, sticky=NSEW)
 param_layout.rowconfigure(0, weight=1)
 param_layout.rowconfigure(1, weight=3)
@@ -339,7 +339,7 @@ high_scale = Scale(detector_param_frame, from_=0, to=255, bg="white", orient=HOR
 high_scale.set(120)
 
 # Capture layout
-capture_layout = Frame(bottom_layout, bg="white")
+capture_layout = Frame(bottom_layout, bg="white", width=int(w*0.3), height=120)
 capture_layout.grid(row=0, column=1, rowspan=2, sticky="NSEW")
 
 capture_btn = Button(capture_layout,
@@ -371,6 +371,6 @@ scrollbar["command"] = capture_lb.yview
 
 if __name__ == "__main__":
     print("start")
-    cam_thread()
+    # cam_thread()
     window.mainloop()
     print("end")
