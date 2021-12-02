@@ -12,6 +12,7 @@ from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
 
+
 class Blur(Enum):
     GAUSSIAN = "GAUSSIAN"
     MEDIAN = "MEDIAN"
@@ -165,11 +166,13 @@ def snapshot():
 def popup_saved_image(filename):
     print(filename)
     FILE_DIR = SAVED_IMAGES_PATH / Path(filename)
-    img = Image.open(FILE_DIR)
-    img = ImageTk.PhotoImage(image=img)
-    video11.img = img
-    video11.configure(image=img)
-
+    try:
+        img = Image.open(FILE_DIR)
+        img = ImageTk.PhotoImage(image=img)
+        video11.img = img
+        video11.configure(image=img)
+    except:
+        print("[Warning]: file is not found")
 
 def draw_histogram(img):
     fig.clear()
