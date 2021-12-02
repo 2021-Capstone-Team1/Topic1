@@ -226,7 +226,7 @@ y = (hs / 2) - (h / 2)
 window.geometry('%dx%d+%d+%d' % (w, h, x, y))
 window.minsize(w, h)
 window.configure(bg="#FFFFFF")
-window.title("캡스톤디자인 NETFLEX팀 경계검출")
+window.title("캡스톤디자인 NETFLEX팀 주제1")
 window.bind('<Escape>', lambda e: window.quit())  # esc로 창 종료
 window.resizable(True, True)
 header_footerFont = Font(family='Tahoma', size=10)
@@ -235,8 +235,8 @@ scaleFont = Font(family='Tahoma', size=11)
 # Canvas 3x2
 canvas_frame = Frame(window)
 canvas_frame.place(x=0, y=0, width=w, height=h-30)
-canvas_frame.rowconfigure(0, weight=3)
-canvas_frame.rowconfigure(1, weight=3)
+canvas_frame.rowconfigure(0, weight=1)
+canvas_frame.rowconfigure(1, weight=1)
 
 canvas_frame_video = Frame(canvas_frame)
 canvas_frame_video.place(x=0, y=0, width =w, height=640)
@@ -263,8 +263,6 @@ video00 = Label(master=frame_tmp00, width=int(w / 2))
 video01 = Frame(master=frame_tmp01, width=int(w / 2))# toolbar frame
 video10 = Label(master=frame_tmp10, width=int(w / 2))
 video11 = Label(master=frame_tmp11, width=int(w / 2))
-# scrollable = ScrollableImage(video11, scrollbarwidth=10)
-# scrollable.pack(fill='both', expand="YES")
 
 frame_tmp00.place(x=0, y=0, width= int(w/2), height=320)
 frame_tmp01.place(x=int(w / 2), y=0, width= int(w/2), height=320)
