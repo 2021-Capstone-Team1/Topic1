@@ -185,7 +185,7 @@ cap = cv2.VideoCapture(0)
 def cam_thread():
     global SELECTED_BLUR, SELECTED_DETECTOR
     ret, color = cap.read()
-    color = cv2.resize(color, dsize=(0, 0), fx=0.6, fy=0.6, interpolation=cv2.INTER_LINEAR)
+    color = cv2.resize(color, dsize=(0, 0), fx=0.55, fy=0.55, interpolation=cv2.INTER_LINEAR)
 
     # 컬러
     color_image = cv2.cvtColor(color, cv2.COLOR_BGR2RGB)
@@ -233,37 +233,39 @@ scaleFont = Font(family='Tahoma', size=11)
 # Canvas 3x2
 canvas_frame = Frame(window)
 canvas_frame.place(x=0, y=0, width=w, height=h-30)
-
-canvas_frame.columnconfigure(0, weight=1)
-canvas_frame.columnconfigure(1, weight=1)
 canvas_frame.rowconfigure(0, weight=3)
 canvas_frame.rowconfigure(1, weight=3)
-canvas_frame.rowconfigure(2, weight=1)
+
+canvas_frame_video = Frame(canvas_frame)
+canvas_frame_video.place(x=0, y=0, width =w, height=640)
+
+canvas_frame_bottom = Frame(canvas_frame)
+canvas_frame_bottom.place(x=0, y=640, width= w, height=130)
 
 # Footer
 footer_label = Label(window, bg="#B7472A", font=header_footerFont, fg="white", text="Netflex.t of Sejong Univ.")
 footer_label.place(x=0, y=h-30, width=w, height=30)
 
 # Top layout
-frame_tmp00 = Frame(canvas_frame, borderwidth=2, relief="ridge")
-frame_tmp01 = Frame(canvas_frame, borderwidth=2, relief="ridge")
-frame_tmp10 = Frame(canvas_frame, borderwidth=2, relief="ridge")
-frame_tmp11 = Frame(canvas_frame, borderwidth=2, relief="ridge")
+frame_tmp00 = Frame(canvas_frame_video, borderwidth=2, relief="ridge")
+frame_tmp01 = Frame(canvas_frame_video, borderwidth=2, relief="ridge")
+frame_tmp10 = Frame(canvas_frame_video, borderwidth=2, relief="ridge")
+frame_tmp11 = Frame(canvas_frame_video, borderwidth=2, relief="ridge")
 
-label00 = Label(master=frame_tmp00, width=int(w / 2), bg="#B7472A", text="원본")
-label01 = Label(master=frame_tmp01, width=int(w / 2), bg="#B7472A", text="히스토그램")
-label10 = Label(master=frame_tmp10, width=int(w / 2), bg="#B7472A", text="에지")
-label11 = Label(master=frame_tmp11, width=int(w / 2), bg="#B7472A", text="캡쳐")
+label00 = Label(master=frame_tmp00, width=int(w / 2), bg="#B7472A", fg="white", text="원본")
+label01 = Label(master=frame_tmp01, width=int(w / 2), bg="#B7472A", fg="white", text="히스토그램")
+label10 = Label(master=frame_tmp10, width=int(w / 2), bg="#B7472A", fg="white", text="에지")
+label11 = Label(master=frame_tmp11, width=int(w / 2), bg="#B7472A", fg="white", text="캡쳐")
 
 video00 = Label(master=frame_tmp00, width=int(w / 2))
 video01 = Frame(master=frame_tmp01, width=int(w / 2))# toolbar frame
 video10 = Label(master=frame_tmp10, width=int(w / 2))
 video11 = Label(master=frame_tmp11, width=int(w / 2))
 
-frame_tmp00.grid(row=0, column=0, sticky=NSEW)
-frame_tmp01.grid(row=0, column=1, sticky=NSEW)
-frame_tmp10.grid(row=1, column=0, sticky=NSEW)
-frame_tmp11.grid(row=1, column=1, sticky=NSEW)
+frame_tmp00.place(x=0, y=0, width= int(w/2), height=320)
+frame_tmp01.place(x=int(w / 2), y=0, width= int(w/2), height=320)
+frame_tmp10.place(x=0, y=320, width= int(w/2), height=320)
+frame_tmp11.place(x=int(w / 2), y=320, width= int(w/2), height=320)
 
 label00.pack(side="top")
 label01.pack(side="top")
@@ -271,18 +273,17 @@ label10.pack(side="top")
 label11.pack(side="top")
 
 video00.pack(side="bottom", fill=BOTH, expand=YES)
-video01.pack(pady="50")
+video01.pack(side="bottom", pady="15")
 video10.pack(side="bottom", fill=BOTH, expand=YES)
 video11.pack(side="bottom", fill=BOTH, expand=YES)
 
-fig = Figure(figsize=(5, 2), dpi=100)  # histogram
+fig = Figure(figsize=(5, 3), dpi=100)  # histogram
 hist_area = FigureCanvasTkAgg(fig, master=video01)
-hist_area.get_tk_widget().pack(fill="both", expand=True)
+hist_area.get_tk_widget().pack(fill="both")
 toolbar = NavigationToolbar2Tk(hist_area, video01)
 
 # Bottom layout (cell합치고 다시 parameter, capture영역으로 분할)
-bottom_layout = Frame(canvas_frame, bg="white", width=w, height=100)
-bottom_layout.grid(row=2, columnspan=2, sticky=NSEW)
+bottom_layout = canvas_frame_bottom
 bottom_layout.columnconfigure(0, weight=4)
 bottom_layout.columnconfigure(1, weight=1)
 bottom_layout.rowconfigure(0, weight=1)
@@ -301,14 +302,14 @@ blur_frame.grid(row=0, column=0, sticky=NSEW)
 filter_frame = Frame(param_layout, bg="white", borderwidth=1, relief=SUNKEN)
 filter_frame.grid(row=0, column=1, sticky=NSEW)
 
-blur_label = Label(blur_frame, text="Blur Type", fg="#4535AA", bg="white", font=scaleFont)
+blur_label = Label(blur_frame, text="Blur Type", fg="black", bg="white", font=scaleFont)
 blur_label.pack(side="left", padx=3)
 blur_combo = ttk.Combobox(blur_frame, state="readonly", font=scaleFont, values=[e.name for e in Blur])
 blur_combo.pack(side="left", padx=3)
 blur_combo.current(0)
 blur_combo.bind("<<ComboboxSelected>>", set_selected_blur)
 
-detector_label = Label(filter_frame, text="Edge Detection Type", fg="#4535AA", bg="white", font=scaleFont)
+detector_label = Label(filter_frame, text="Edge Detection Type", fg="black", bg="white", font=scaleFont)
 detector_label.pack(side="left", padx=3)
 detector_combo = ttk.Combobox(filter_frame, state="readonly", font=scaleFont, values=[e.name for e in Detector])
 detector_combo.pack(side="left", padx=3)
@@ -372,17 +373,17 @@ detector_frame3 = Frame(detector_param_frame, bg="white")
 detector_frame4 = Frame(detector_param_frame, bg="white")
 detector_frame5 = Frame(detector_param_frame, bg="white")
 
-ksize_d_label = Label(detector_frame0, width=dw, text="ksize", font=scaleFont, bg="pink")
+ksize_d_label = Label(detector_frame0, width=dw, text="ksize", font=scaleFont, bg="white")
 ksize_d_label.pack(side="left", fill=BOTH, expand=YES)
-norm_label = Label(detector_frame1, width=dw, text="norm", font=scaleFont, bg="pink")
+norm_label = Label(detector_frame1, width=dw, text="norm", font=scaleFont, bg="white")
 norm_label.pack(side="left", fill=BOTH, expand=YES)
-dx_label = Label(detector_frame2, width=dw, text="dx", font=scaleFont, bg="pink")
+dx_label = Label(detector_frame2, width=dw, text="dx", font=scaleFont, bg="white")
 dx_label.pack(side="left", fill=BOTH, expand=YES)
-dy_label = Label(detector_frame3, width=dw, text="dy", font=scaleFont, bg="pink")
+dy_label = Label(detector_frame3, width=dw, text="dy", font=scaleFont, bg="white")
 dy_label.pack(side="left", fill=BOTH, expand=YES)
-low_label = Label(detector_frame4, width=dw, text="Low Threshold", font=scaleFont, bg="pink")
+low_label = Label(detector_frame4, width=dw, text="Low Threshold", font=scaleFont, bg="white")
 low_label.pack(side="left", fill=BOTH, expand=YES)
-high_label = Label(detector_frame5, width=dw, text="High Threshold", font=scaleFont, bg="pink")
+high_label = Label(detector_frame5, width=dw, text="High Threshold", font=scaleFont, bg="white")
 high_label.pack(side="left", fill=BOTH, expand=YES)
 
 ksize_d_spinbox = Spinbox(detector_frame0, from_=1, to=31, increment=2, state="readonly",
@@ -411,12 +412,12 @@ capture_btn = Button(capture_layout,
                      text="Save Image",
                      font=scaleFont,
                      fg="white",
-                     bg="#4535AA",
-                     activeforeground="#009888",
+                     bg="#B7472A",
+                     activeforeground="#B7472A",
                      borderwidth=3,
                      command=lambda: snapshot(),
                      relief="groove")
-capture_btn.pack(pady=10)
+capture_btn.pack(side="top")
 
 scrollbar = Scrollbar(capture_layout)
 scrollbar.pack(side="right", fill="y")
@@ -425,7 +426,7 @@ capture_lb = Listbox(capture_layout, yscrollcommand=scrollbar.set, exportselecti
 capture_lb['bg'] = "#E7E6E6"
 capture_lb['fg'] = "grey"
 capture_lb['font'] = scaleFont
-capture_lb.pack(pady=3, fill="x", expand="yes")
+capture_lb.pack(side="left", pady=3, fill="x", expand="yes")
 capture_lb.bind("<<ListboxSelect>>", lambda event: popup_saved_image(capture_lb.get(capture_lb.curselection())))
 
 for file in os.listdir(SAVED_IMAGES_PATH):
