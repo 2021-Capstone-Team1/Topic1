@@ -12,7 +12,6 @@ from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import *
 from matplotlib.figure import Figure
 
-
 class Blur(Enum):
     GAUSSIAN = "GAUSSIAN"
     MEDIAN = "MEDIAN"
@@ -261,6 +260,8 @@ video00 = Label(master=frame_tmp00, width=int(w / 2))
 video01 = Frame(master=frame_tmp01, width=int(w / 2))# toolbar frame
 video10 = Label(master=frame_tmp10, width=int(w / 2))
 video11 = Label(master=frame_tmp11, width=int(w / 2))
+# scrollable = ScrollableImage(video11, scrollbarwidth=10)
+# scrollable.pack(fill='both', expand="YES")
 
 frame_tmp00.place(x=0, y=0, width= int(w/2), height=320)
 frame_tmp01.place(x=int(w / 2), y=0, width= int(w/2), height=320)
@@ -330,15 +331,15 @@ blur_frame3 = Frame(blur_param_frame, bg="white")
 blur_frame4 = Frame(blur_param_frame, bg="white")
 
 ksize_label = Label(blur_frame0, text="ksize", font=scaleFont, bg="white")
-ksize_label.pack(side="left", fill=BOTH, expand=YES)
+ksize_label.pack(side="left", fill='x', expand=YES)
 sigmaX_label = Label(blur_frame1, text="sigmaX", font=scaleFont, bg="white")
-sigmaX_label.pack(side="left", fill=BOTH, expand=YES)
+sigmaX_label.pack(side="left", fill='x', expand=YES)
 d_label = Label(blur_frame2, text="diameter    ", font=scaleFont, bg="white")
-d_label.pack(side="left", fill=BOTH, expand=YES)
+d_label.pack(side="left", fill='x', expand=YES)
 sigmaColor_label = Label(blur_frame3, text="sigmaColor", font=scaleFont, bg="white")
-sigmaColor_label.pack(side="left", fill=BOTH, expand=YES)
+sigmaColor_label.pack(side="left", fill='x', expand=YES)
 sigmaSpace_label = Label(blur_frame4, text="sigmaSpace", font=scaleFont, bg="white")
-sigmaSpace_label.pack(side="left", fill=BOTH, expand=YES)
+sigmaSpace_label.pack(side="left", fill='x', expand=YES)
 
 default_value_ksize = StringVar(window)
 default_value_ksize.set("3")
@@ -352,17 +353,17 @@ default_value_sigmaSpace = StringVar(window)
 default_value_sigmaSpace.set("75")
 ksize_spinbox = Spinbox(blur_frame0, from_=1, to=31, increment=2, state="readonly",
                         textvariable=default_value_ksize)
-ksize_spinbox.pack(side="right", fill=BOTH, expand=YES)
+ksize_spinbox.pack(side="right", fill='x', expand=YES)
 sigmaX_spinbox = Spinbox(blur_frame1, from_=0, to=10, increment=1, state="readonly")
-sigmaX_spinbox.pack(side="right", fill=BOTH, expand=YES)
+sigmaX_spinbox.pack(side="right", fill='x', expand=YES)
 d_spinbox = Spinbox(blur_frame2, from_=1, to=10, increment=1, state="readonly", textvariable=default_value_d)
-d_spinbox.pack(side="right", fill=BOTH, expand=YES)
+d_spinbox.pack(side="right", fill='x', expand=YES)
 sigmaColor_entry = Spinbox(blur_frame3, from_=0, to=75, increment=1, state="readonly",
                            textvariable=default_value_sigmaColor)
-sigmaColor_entry.pack(side="right", fill=BOTH, expand=YES)
+sigmaColor_entry.pack(side="right", fill='x', expand=YES)
 sigmaSpace_entry = Spinbox(blur_frame4, from_=0, to=75, increment=1, state="readonly",
                            textvariable=default_value_sigmaSpace)
-sigmaSpace_entry.pack(side="right", fill=BOTH, expand=YES)
+sigmaSpace_entry.pack(side="right", fill='x', expand=YES)
 
 # -- detector --
 dw = 40
@@ -374,34 +375,34 @@ detector_frame4 = Frame(detector_param_frame, bg="white")
 detector_frame5 = Frame(detector_param_frame, bg="white")
 
 ksize_d_label = Label(detector_frame0, width=dw, text="ksize", font=scaleFont, bg="white")
-ksize_d_label.pack(side="left", fill=BOTH, expand=YES)
+ksize_d_label.pack(side="left", fill='x', expand=YES)
 norm_label = Label(detector_frame1, width=dw, text="norm", font=scaleFont, bg="white")
-norm_label.pack(side="left", fill=BOTH, expand=YES)
+norm_label.pack(side="left", fill='x', expand=YES)
 dx_label = Label(detector_frame2, width=dw, text="dx", font=scaleFont, bg="white")
-dx_label.pack(side="left", fill=BOTH, expand=YES)
+dx_label.pack(side="left", fill='x', expand=YES)
 dy_label = Label(detector_frame3, width=dw, text="dy", font=scaleFont, bg="white")
-dy_label.pack(side="left", fill=BOTH, expand=YES)
+dy_label.pack(side="left", fill='x', expand=YES)
 low_label = Label(detector_frame4, width=dw, text="Low Threshold", font=scaleFont, bg="white")
-low_label.pack(side="left", fill=BOTH, expand=YES)
+low_label.pack(side="left", fill='x', expand=YES)
 high_label = Label(detector_frame5, width=dw, text="High Threshold", font=scaleFont, bg="white")
-high_label.pack(side="left", fill=BOTH, expand=YES)
+high_label.pack(side="left", fill='x', expand=YES)
 
 ksize_d_spinbox = Spinbox(detector_frame0, from_=1, to=31, increment=2, state="readonly",
                           textvariable=default_value_ksize_d)
 ksize_d_spinbox.pack(side="right", fill=BOTH, expand=YES)
 norm_combobox = ttk.Combobox(detector_frame1, state="readonly", values=["L1", "L2"])
 norm_combobox.current(1)
-norm_combobox.pack(side="right", fill=BOTH, expand=YES)
+norm_combobox.pack(side="right", fill='x', expand=YES)
 dx_spinbox = Spinbox(detector_frame2, from_=1, to=10, increment=1, state="readonly")
-dx_spinbox.pack(side="right", fill=BOTH, expand=YES)
+dx_spinbox.pack(side="right", fill='x', expand=YES)
 dy_spinbox = Spinbox(detector_frame3, from_=1, to=10, increment=1, state="readonly")
-dy_spinbox.pack(side="right", fill=BOTH, expand=YES)
+dy_spinbox.pack(side="right", fill='x', expand=YES)
 low_scale = Scale(detector_frame4, from_=0, to=255, bg="white", orient=HORIZONTAL)
 low_scale.set(70)
-low_scale.pack(side="right", fill=BOTH, expand=YES)
+low_scale.pack(side="right", fill='x', expand=YES)
 high_scale = Scale(detector_frame5, from_=0, to=255, bg="white", orient=HORIZONTAL)
 high_scale.set(120)
-high_scale.pack(side="right", fill=BOTH, expand=YES)
+high_scale.pack(side="right", fill='x', expand=YES)
 
 
 # Capture layout
